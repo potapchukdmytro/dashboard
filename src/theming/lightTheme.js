@@ -10,9 +10,9 @@ const lightTheme = createTheme({
         },
         secondary: {
             light: green[200],
-            main: green[500],
+            main: "#798897",
             dark: green[800],
-        },
+        }
     },
 });
 
