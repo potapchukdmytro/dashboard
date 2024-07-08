@@ -7,8 +7,10 @@ import {
     TableHead,
     TableRow,
     Paper,
-    Container
+    Container,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import { Link } from "react-router-dom";
 
 const users = [
     {
@@ -58,7 +60,7 @@ const users = [
         role: "user",
         name: "userName5",
         surname: "userSurname5",
-    }
+    },
 ];
 
 const UsersPage = () => {
@@ -102,6 +104,12 @@ const UsersPage = () => {
                             >
                                 Full name
                             </TableCell>
+                            <TableCell
+                                sx={{ fontWeight: "bold" }}
+                                align="center"
+                            >
+                                Edit
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -118,6 +126,14 @@ const UsersPage = () => {
                                     {item.role}
                                 </TableCell>
                                 <TableCell align="center">{`${item.name} ${item.surname}`}</TableCell>
+                                <TableCell align="center">
+                                    {/* <Link to={`createuser/${item.id}`}>
+                                        <EditIcon />
+                                    </Link> */}
+                                    <Link to={`createuser?userId=${item.id}&email=${item.email}`}>
+                                        <EditIcon />
+                                    </Link>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

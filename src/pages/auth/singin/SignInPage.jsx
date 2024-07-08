@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
     Avatar,
     Button,
@@ -24,7 +24,6 @@ const SignInPage = () => {
     // submit method
     const handleSubmit = (values) => {
         window.localStorage.setItem("user", JSON.stringify(values));
-
         navigate("/");
     };
 
@@ -52,7 +51,7 @@ const SignInPage = () => {
     });
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" sx={{mb: 10}}>
             <CssBaseline />
             <Box
                 sx={{
@@ -126,11 +125,14 @@ const SignInPage = () => {
                         <Grid item xs>
                             Forgot password?
                         </Grid>
-                        <Grid item>Don't have an account? Sign Up</Grid>
+                        <Grid item>
+                            <Link to="/signup">
+                                Don't have an account? Sign Up
+                            </Link>
+                        </Grid>
                     </Grid>
                 </Box>
             </Box>
-            {/* { textShow ? <Typography variant="h3">Dynamic text</Typography> : <h1>False</h1> } */}
         </Container>
     );
 };

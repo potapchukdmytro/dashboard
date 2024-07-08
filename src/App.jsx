@@ -8,6 +8,9 @@ import SignInPage from "./pages/auth/singin/SignInPage";
 import { Routes, Route } from "react-router-dom";
 import DefaulLayout from "./components/layouts/default/DefaultLayout";
 import UsersPage from "./pages/user/UsersPage";
+import SignUpPage from "./pages/auth/singup/SignUpPage";
+
+import "./App.css";
 
 const App = () => {
     return (
@@ -17,6 +20,10 @@ const App = () => {
                     <Route index element={<MainPage />} />
                     <Route path="user">
                         <Route index element={<UsersPage />} />
+                        {/* <Route
+                            path="createuser/:userId"
+                            element={<CreateUserPage />}
+                        /> */}
                         <Route
                             path="createuser"
                             element={<CreateUserPage />}
@@ -24,6 +31,7 @@ const App = () => {
                     </Route>
 
                     <Route path="/signin" element={<SignInPage />} />
+                    <Route path="/signup" element={<SignUpPage />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>

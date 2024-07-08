@@ -2,8 +2,23 @@ import React from "react";
 import { Container } from "@mui/material";
 import { useFormik } from "formik";
 import { Box } from "@mui/material";
+import { useParams, useLocation } from "react-router-dom";
+
+const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+}
 
 const CreateUserPage = () => {
+    // якщо передали через createuser/:userId
+    // const { userId } = useParams();
+    // console.log("Id: ", userId)
+
+    const query = useQuery();
+    const user = {
+        id: query.get("userId"),
+        email: query.get("email")
+    }
+
     const rowStyle = {
         mt: 1,
     };
@@ -15,7 +30,7 @@ const CreateUserPage = () => {
     const formik = useFormik({
         initialValues: {
             userName: "",
-            email: "",
+            email: user.email,
             role: "user",
             name: "",
             surname: "",
