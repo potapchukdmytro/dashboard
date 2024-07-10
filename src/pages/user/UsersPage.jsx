@@ -65,81 +65,59 @@ const users = [
 
 const UsersPage = () => {
     return (
-        <Container sx={{ mt: 2 }}>
-            <TableContainer component={Paper}>
-                <Table
-                    sx={{ minWidth: 650 }}
-                    size="small"
-                    aria-label="a dense table"
-                >
-                    <TableHead>
-                        <TableRow>
-                            <TableCell
-                                sx={{ fontWeight: "bold" }}
-                                align="center"
-                            >
-                                Id
+        <TableContainer component={Paper}>
+            <Table
+                sx={{ minWidth: 650 }}
+                size="small"
+                aria-label="a dense table"
+            >
+                <TableHead>
+                    <TableRow>
+                        <TableCell sx={{ fontWeight: "bold" }} align="center">
+                            Id
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }} align="center">
+                            User name
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }} align="center">
+                            Email
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }} align="center">
+                            Role
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }} align="center">
+                            Full name
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }} align="center">
+                            Edit
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {users.map((item) => (
+                        <TableRow key={item.id}>
+                            <TableCell align="center">{item.id}</TableCell>
+                            <TableCell align="center">
+                                {item.userName}
                             </TableCell>
-                            <TableCell
-                                sx={{ fontWeight: "bold" }}
-                                align="center"
-                            >
-                                User name
-                            </TableCell>
-                            <TableCell
-                                sx={{ fontWeight: "bold" }}
-                                align="center"
-                            >
-                                Email
-                            </TableCell>
-                            <TableCell
-                                sx={{ fontWeight: "bold" }}
-                                align="center"
-                            >
-                                Role
-                            </TableCell>
-                            <TableCell
-                                sx={{ fontWeight: "bold" }}
-                                align="center"
-                            >
-                                Full name
-                            </TableCell>
-                            <TableCell
-                                sx={{ fontWeight: "bold" }}
-                                align="center"
-                            >
-                                Edit
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {users.map((item) => (
-                            <TableRow key={item.id}>
-                                <TableCell align="center">{item.id}</TableCell>
-                                <TableCell align="center">
-                                    {item.userName}
-                                </TableCell>
-                                <TableCell align="center">
-                                    {item.email}
-                                </TableCell>
-                                <TableCell align="center">
-                                    {item.role}
-                                </TableCell>
-                                <TableCell align="center">{`${item.name} ${item.surname}`}</TableCell>
-                                <TableCell align="center">
-                                    {/* <Link to={`createuser/${item.id}`}>
+                            <TableCell align="center">{item.email}</TableCell>
+                            <TableCell align="center">{item.role}</TableCell>
+                            <TableCell align="center">{`${item.name} ${item.surname}`}</TableCell>
+                            <TableCell align="center">
+                                {/* <Link to={`createuser/${item.id}`}>
                                         <EditIcon />
                                     </Link> */}
-                                    <Link to={`createuser?userId=${item.id}&email=${item.email}`}>
-                                        <EditIcon />
-                                    </Link>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Container>
+                                <Link
+                                    to={`createuser?userId=${item.id}&email=${item.email}`}
+                                >
+                                    <EditIcon />
+                                </Link>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 };
 

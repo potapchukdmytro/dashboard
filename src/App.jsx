@@ -11,6 +11,7 @@ import UsersPage from "./pages/user/UsersPage";
 import SignUpPage from "./pages/auth/singup/SignUpPage";
 
 import "./App.css";
+import CharactersPage from "./pages/characters/CharactersPage";
 
 const App = () => {
     return (
@@ -18,16 +19,14 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<DefaulLayout />}>
                     <Route index element={<MainPage />} />
+                    <Route path="characters" element={<CharactersPage />} />
                     <Route path="user">
                         <Route index element={<UsersPage />} />
                         {/* <Route
                             path="createuser/:userId"
                             element={<CreateUserPage />}
                         /> */}
-                        <Route
-                            path="createuser"
-                            element={<CreateUserPage />}
-                        />
+                        <Route path="createuser" element={<CreateUserPage />} />
                     </Route>
 
                     <Route path="/signin" element={<SignInPage />} />

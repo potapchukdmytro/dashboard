@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 const pages = [
     { id: "1", title: "Головна сторінка", url: "/" },
     { id: "2", title: "Користувачі", url: "user" },
-    { id: "3", title: "Сторінка 3", url: "/" },
+    { id: "3", title: "Персонажі", url: "characters" },
     { id: "4", title: "Сторінка 3", url: "/" },
 ];
 
