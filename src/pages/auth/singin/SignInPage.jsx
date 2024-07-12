@@ -15,6 +15,8 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const SignInPage = () => {
     // const [textShow, setTextShow] = useState(true);
@@ -26,6 +28,20 @@ const SignInPage = () => {
         window.localStorage.setItem("user", JSON.stringify(values));
         navigate("/");
     };
+
+    // google
+    const googleSuccesHandler = (credentials) => {
+        const token = credentials.credential;
+        // const userData = jwtDecode(token);
+        // console.log(userData);
+
+        localStorage.setItem("auth", token)
+        navigate("/");
+    }
+
+    const gooleErrorHandler = () => {
+        console.log("Google auth error");
+    }
 
     // yup validation Schema
     const validationSchema = Yup.object({
@@ -51,7 +67,7 @@ const SignInPage = () => {
     });
 
     return (
-        <Container component="main" maxWidth="xs" sx={{mb: 10}}>
+        <Container component="main" maxWidth="xs" sx={{ mb: 10 }}>
             <CssBaseline />
             <Box
                 sx={{
@@ -121,6 +137,14 @@ const SignInPage = () => {
                     >
                         Sign In
                     </Button>
+                    <Box sx={{mb: 2}}>
+                        <GoogleLogin
+                            size="large"
+                            width="400px"
+                            onSuccess={googleSuccesHandler}
+                            onError={gooleErrorHandler}
+                        />
+                    </Box>
                     <Grid container>
                         <Grid item xs>
                             Forgot password?
