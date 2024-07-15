@@ -15,18 +15,24 @@ import logo from "./images/logo.png";
 import { btnPageStyle } from "./style";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { useDispatch } from "react-redux";
 
 const pages = [
     { id: "1", title: "Головна сторінка", url: "/" },
     { id: "2", title: "Користувачі", url: "user" },
     { id: "3", title: "Персонажі", url: "characters" },
-    { id: "4", title: "Сторінка 3", url: "/" },
+    { id: "4", title: "Сторінка 3", url: "counter" },
 ];
 
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const [theme, setTheme] = useState(localStorage.getItem("theme"));
     const [user, setUser] = useState(null);
+
+    const dispatch = useDispatch();
 
     // navmenu
     const handleOpenNavMenu = (event) => {
@@ -36,6 +42,21 @@ const Navbar = () => {
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
+
+    const changeTheme = () => {
+        const value = theme === "dark" ? "light" : "dark";
+        setTheme(value);
+        localStorage.setItem("theme", value);
+        dispatch({ type: "CHANGE_THEME" });
+    };
+
+    useEffect(() => {
+        const themeLocal = localStorage.getItem("theme");
+        if(themeLocal === "dark") {
+            dispatch({type: "CHANGE_THEME"})
+            setTheme("dark");
+        }
+    }, []);
 
     // usermenu
     const handleOpenUserMenu = (event) => {
@@ -140,8 +161,20 @@ const Navbar = () => {
                         </Link>
                     ))}
                 </Grid>
-                <Grid item xs={3} sx={{ textAlign: "end", pr: 3 }}>
-                    <Box>
+                <Grid item container xs={3} sx={{ textAlign: "end", pr: 3 }}>
+                    <Grid item xs={2} sx={{textAlign: "end"}}>
+                        <IconButton
+                            onClick={changeTheme}
+                            color="inherit"
+                        >
+                            {theme === "dark" ? (
+                                <Brightness7Icon />
+                            ) : (
+                                <Brightness4Icon />
+                            )}
+                        </IconButton>
+                    </Grid>
+                    <Grid item xs={10} sx={{textAlign: "end"}}>
                         {user === null ? (
                             <>
                                 <Link to="/signin">
@@ -195,7 +228,7 @@ const Navbar = () => {
                                 </Menu>
                             </>
                         )}
-                    </Box>
+                    </Grid>
                 </Grid>
             </Grid>
         </AppBar>
