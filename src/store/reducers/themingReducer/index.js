@@ -1,11 +1,11 @@
 const initialState = {
-    isDark: false
+    theme: "light"
 };
 
 export const ThemingReducer = (state = initialState, action) => {
     switch(action.type) {
-        case "CHANGE_THEME":
-            return { ...state, isDark: !state.isDark }
+        case "SET_THEME":
+            return { ...state, theme: action.payload }
         default:
             return state;
     }

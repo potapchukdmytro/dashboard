@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MainPage from "./pages/mainPage/MainPage";
 import NotFound from "./pages/notFound/NotFound";
 import { ThemeProvider } from "@mui/material/styles";
@@ -11,21 +11,31 @@ import DefaulLayout from "./components/layouts/default/DefaultLayout";
 import UsersPage from "./pages/user/UsersPage";
 import SignUpPage from "./pages/auth/singup/SignUpPage";
 import ProfilePage from "./pages/profile/ProfilePage";
-
-import "./App.css";
 import CharactersPage from "./pages/characters/CharactersPage";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import CounterPage from "./pages/counterPage/CounterPage";
 import { useSelector } from "react-redux";
+import { useAction } from "./hooks/useAction";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
     const clientId =
         "47235399203-5dbvs4krmn7oao0p2fk1102dpam9vgsb.apps.googleusercontent.com";
-    const { isDark } = useSelector(state => state.themingReducer);
-    const theme = isDark ? darkTheme : lightTheme;        
+    const { theme } = useSelector((state) => state.themingReducer);
+    const currentTheme = theme === "dark" ? darkTheme : lightTheme;
+
+    const { signIn } = useAction();
+
+    useEffect(() => {
+        const token = localStorage.getItem("auth");
+        if (token != null) {
+            signIn(token);
+        }
+    }, []);
 
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={currentTheme}>
             <GoogleOAuthProvider clientId={clientId}>
                 <Routes>
                     <Route path="/" element={<DefaulLayout />}>
@@ -49,6 +59,15 @@ const App = () => {
                         <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={1000}
+                    hideProgressBar={true}
+                    closeOnClick
+                    rtl={false}
+                    theme={theme === "light" ? "dark" : "light"}
+                    pauseOnHover={false}
+                />
             </GoogleOAuthProvider>
         </ThemeProvider>
     );
