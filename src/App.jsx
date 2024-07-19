@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { useAction } from "./hooks/useAction";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
 
 const App = () => {
     const clientId =
@@ -45,10 +46,6 @@ const App = () => {
                         <Route path="counter" element={<CounterPage />} />
                         <Route path="user">
                             <Route index element={<UsersPage />} />
-                            {/* <Route
-                            path="createuser/:userId"
-                            element={<CreateUserPage />}
-                        /> */}
                             <Route
                                 path="createuser"
                                 element={<CreateUserPage />}

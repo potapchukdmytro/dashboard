@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "userName": "admin",
+        "email": "admin@dash.com",
+        "role": "admin",
+        "name": "admin",
+        "surname": "admin"
+    },
+    {
+        "id": 2,
+        "userName": "stepan",
+        "email": "stepanchik@dash.com",
+        "role": "user",
+        "name": "Stepan",
+        "surname": "Bandera"
+    },
+    {
+        "id": 3,
+        "userName": "user2",
+        "email": "user2@dash.com",
+        "role": "user",
+        "name": "userName2",
+        "surname": "userSurname2"
+    },
+    {
+        "id": 4,
+        "userName": "user3",
+        "email": "user3@dash.com",
+        "role": "user",
+        "name": "userName3",
+        "surname": "userSurname3"
+    },
+    {
+        "id": 5,
+        "userName": "user4",
+        "email": "user4@dash.com",
+        "role": "user",
+        "name": "userName4",
+        "surname": "userSurname4"
+    },
+    {
+        "id": 6,
+        "userName": "user5",
+        "email": "user5@dash.com",
+        "role": "user",
+        "name": "userName5",
+        "surname": "userSurname5"
+    }
+]

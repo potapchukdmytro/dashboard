@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Table,
     TableBody,
@@ -6,64 +6,28 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper,
-    Container,
+    Paper
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
-
-const users = [
-    {
-        id: 1,
-        userName: "admin",
-        email: "admin@dash.com",
-        role: "admin",
-        name: "admin",
-        surname: "admin",
-    },
-    {
-        id: 2,
-        userName: "user1",
-        email: "user1@dash.com",
-        role: "user",
-        name: "userName1",
-        surname: "userSurname1",
-    },
-    {
-        id: 3,
-        userName: "user2",
-        email: "user2@dash.com",
-        role: "user",
-        name: "userName2",
-        surname: "userSurname2",
-    },
-    {
-        id: 4,
-        userName: "user3",
-        email: "user3@dash.com",
-        role: "user",
-        name: "userName3",
-        surname: "userSurname3",
-    },
-    {
-        id: 5,
-        userName: "user4",
-        email: "user4@dash.com",
-        role: "user",
-        name: "userName4",
-        surname: "userSurname4",
-    },
-    {
-        id: 6,
-        userName: "user5",
-        email: "user5@dash.com",
-        role: "user",
-        name: "userName5",
-        surname: "userSurname5",
-    },
-];
+import { useAction } from "../../hooks/useAction"; 
+import { useSelector } from "react-redux";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const UsersPage = () => {
+    const { userList, usersLoaded } = useSelector(state => state.userReducer);
+    const { loadUsers, removeUser } = useAction();
+
+    const deleteUserHandler = (id) => {
+        removeUser(id, userList);
+    };
+
+    useEffect(() => {
+        if(!usersLoaded) {
+            loadUsers();
+        }
+    }, []);
+
     return (
         <TableContainer component={Paper}>
             <Table
@@ -94,7 +58,7 @@ const UsersPage = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {users.map((item) => (
+                    {userList.map((item) => (
                         <TableRow key={item.id}>
                             <TableCell align="center">{item.id}</TableCell>
                             <TableCell align="center">
@@ -104,14 +68,12 @@ const UsersPage = () => {
                             <TableCell align="center">{item.role}</TableCell>
                             <TableCell align="center">{`${item.name} ${item.surname}`}</TableCell>
                             <TableCell align="center">
-                                {/* <Link to={`createuser/${item.id}`}>
-                                        <EditIcon />
-                                    </Link> */}
                                 <Link
-                                    to={`createuser?userId=${item.id}&email=${item.email}`}
+                                    to={`createuser?user=${item.id}`}
                                 >
                                     <EditIcon />
                                 </Link>
+                                <DeleteIcon onClick={() => deleteUserHandler(item.id)}/>
                             </TableCell>
                         </TableRow>
                     ))}
