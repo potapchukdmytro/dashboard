@@ -28,11 +28,28 @@ const App = () => {
 
     const { signIn } = useAction();
 
+    const successLocation = async (position) => {
+        const apiUrl = `http://api.openweathermap.org/geo/1.0/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=bf89f3f10b52303587e748f50178cba8`;
+        const response = await axios(apiUrl);
+
+        const {data} = response;
+        
+        const cityName = data[0].name;
+        localStorage.setItem("userCity", cityName);
+    };
+
+    const errorLocation = () => {
+        localStorage.setItem("userCity", "Kyiv");
+        console.log("Error get user location");
+    };
+
     useEffect(() => {
         const token = localStorage.getItem("auth");
         if (token != null) {
             signIn(token);
         }
+
+        navigator.geolocation.getCurrentPosition(successLocation, errorLocation);
     }, []);
 
     return (

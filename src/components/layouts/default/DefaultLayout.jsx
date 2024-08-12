@@ -10,6 +10,8 @@ const DefaulLayout = () => {
             <Navbar />
             <Container sx={{ my: 2, minHeight: "500px" }}>
                 <Outlet />
+                {/* path=profile outlet = ProfilePage */}
+                {/* path=users outlet = UsersPage */}
             </Container>
             <Footer />
         </>
