@@ -1,0 +1,16 @@
+{
+    "signin": "Se connecter",
+    "signup": "S'inscrire",
+    "logout": "Logout",
+    "mainpage": "Déconnexion",
+    "users": "Utilisatrices",
+    "characters": "Personnages",
+    "page3": "Page 3",
+    "profile": "Profil",
+    "username": "Nom d'utilisateur",
+	"email": "E-mail",
+	"role": "Rôle",
+	"fullname": "Nom et prénom",
+	"table_buttons": "Modifier",
+    "id": "id"
+}

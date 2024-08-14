@@ -1,0 +1,16 @@
+{
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "logout": "Logout",
+    "mainpage": "Main page",
+    "users": "Users",
+    "characters": "Characters",
+    "page3": "Page 3",
+    "profile": "Profile",
+	"username": "Username",
+	"email": "Email",
+	"role": "Role",
+	"fullname": "Full name",
+	"table_buttons": "Edit",
+    "id": "id"
+}

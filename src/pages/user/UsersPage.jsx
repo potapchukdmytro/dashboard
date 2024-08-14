@@ -6,24 +6,27 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper
+    Paper,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
-import { useAction } from "../../hooks/useAction"; 
+import { useAction } from "../../hooks/useAction";
 import { useSelector } from "react-redux";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useTranslation } from "react-i18next";
 
 const UsersPage = () => {
-    const { userList, usersLoaded } = useSelector(state => state.userReducer);
+    const { userList, usersLoaded } = useSelector((state) => state.userReducer);
     const { loadUsers, removeUser } = useAction();
 
     const deleteUserHandler = (id) => {
         removeUser(id, userList);
     };
 
+    const { t } = useTranslation();
+
     useEffect(() => {
-        if(!usersLoaded) {
+        if (!usersLoaded) {
             loadUsers();
         }
     }, []);
@@ -38,22 +41,22 @@ const UsersPage = () => {
                 <TableHead>
                     <TableRow>
                         <TableCell sx={{ fontWeight: "bold" }} align="center">
-                            Id
+                            {t('id')}
                         </TableCell>
                         <TableCell sx={{ fontWeight: "bold" }} align="center">
-                            User name
+                            {t("username")}
                         </TableCell>
                         <TableCell sx={{ fontWeight: "bold" }} align="center">
-                            Email
+                            {t("email")}
                         </TableCell>
                         <TableCell sx={{ fontWeight: "bold" }} align="center">
-                            Role
+                            {t("role")}
                         </TableCell>
                         <TableCell sx={{ fontWeight: "bold" }} align="center">
-                            Full name
+                            {t("fullname")}
                         </TableCell>
                         <TableCell sx={{ fontWeight: "bold" }} align="center">
-                            Edit
+                            {t("table_buttons")}
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -68,12 +71,12 @@ const UsersPage = () => {
                             <TableCell align="center">{item.role}</TableCell>
                             <TableCell align="center">{`${item.name} ${item.surname}`}</TableCell>
                             <TableCell align="center">
-                                <Link
-                                    to={`createuser?user=${item.id}`}
-                                >
+                                <Link to={`createuser?user=${item.id}`}>
                                     <EditIcon />
                                 </Link>
-                                <DeleteIcon onClick={() => deleteUserHandler(item.id)}/>
+                                <DeleteIcon
+                                    onClick={() => deleteUserHandler(item.id)}
+                                />
                             </TableCell>
                         </TableRow>
                     ))}

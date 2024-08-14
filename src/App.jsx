@@ -17,19 +17,23 @@ import CounterPage from "./pages/counterPage/CounterPage";
 import { useSelector } from "react-redux";
 import { useAction } from "./hooks/useAction";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import "./locales/config";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
-    const [userIp, setUserIp] = useState(null);
 
+    // theme
     const clientId =
         "47235399203-5dbvs4krmn7oao0p2fk1102dpam9vgsb.apps.googleusercontent.com";
     const { theme } = useSelector((state) => state.themingReducer);
     const currentTheme = theme === "dark" ? darkTheme : lightTheme;
 
+    // sign in
     const { signIn } = useAction();
 
+
+    // get user location
     const successLocation = async (position) => {
         const apiUrl = `http://api.openweathermap.org/geo/1.0/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=bf89f3f10b52303587e748f50178cba8`;
         const response = await axios(apiUrl);
@@ -43,7 +47,7 @@ const App = () => {
     const errorLocation = () => {
         // localStorage.setItem("userCity", "Kyiv");
         getUserIp();
-        console.log("Error get user location");
+        //console.log("Error get user location");
     };
 
     const getLocationByIp = (ip) => {
@@ -68,6 +72,9 @@ const App = () => {
             console.log(error);
         }
     };
+
+
+    // localization
 
     useEffect(() => {
         const token = localStorage.getItem("auth");

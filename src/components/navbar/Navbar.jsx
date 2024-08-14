@@ -18,12 +18,14 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { useSelector } from "react-redux";
 import { useAction } from "../../hooks/useAction";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+import { changeLanguage } from "i18next";
 
 const pages = [
-    { id: "1", title: "Головна сторінка", url: "/" },
-    { id: "2", title: "Користувачі", url: "user" },
-    { id: "3", title: "Персонажі", url: "characters" },
-    { id: "4", title: "Сторінка 3", url: "counter" },
+    { id: "1", title: "mainpage", url: "/" },
+    { id: "2", title: "users", url: "user" },
+    { id: "3", title: "characters", url: "characters" },
+    { id: "4", title: "page3", url: "counter" },
 ];
 
 const Navbar = () => {
@@ -33,6 +35,8 @@ const Navbar = () => {
     const { theme } = useSelector((state) => state.themingReducer);
     const { logout, setTheme } = useAction();
     const navigate = useNavigate();
+
+    const { t } = useTranslation();
 
     // auth
     const logoutHandler = () => {
@@ -116,7 +120,7 @@ const Navbar = () => {
                             <Link key={page.id} to={page.url}>
                                 <MenuItem onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
-                                        {page.title}
+                                        {t(`${page.title}`)}
                                     </Typography>
                                 </MenuItem>
                             </Link>
@@ -149,7 +153,7 @@ const Navbar = () => {
                 </Grid>
                 <Grid
                     item
-                    xs={7}
+                    xs={6}
                     sx={{
                         justifyContent: "space-evenly",
                         display: { xs: "none", md: "flex" },
@@ -157,11 +161,13 @@ const Navbar = () => {
                 >
                     {pages.map((page) => (
                         <Link key={page.id} to={page.url}>
-                            <Button sx={btnPageStyle}>{page.title}</Button>
+                            <Button sx={btnPageStyle}>
+                                {t(`${page.title}`)}
+                            </Button>
                         </Link>
                     ))}
                 </Grid>
-                <Grid item container xs={3} sx={{ textAlign: "end", pr: 3 }}>
+                <Grid item container xs={4} sx={{ textAlign: "end", pr: 3 }}>
                     <Grid item xs={2} sx={{ textAlign: "end" }}>
                         <IconButton onClick={changeTheme} color="inherit">
                             {theme === "dark" ? (
@@ -171,17 +177,22 @@ const Navbar = () => {
                             )}
                         </IconButton>
                     </Grid>
-                    <Grid item xs={10} sx={{ textAlign: "end" }}>
+                    <Grid item xs={3} sx={{ display: "flex", alignItems: "center", justifyContent: "start" }}>
+                        <Typography onClick={() => { changeLanguage("uk") }} sx={{ color: "black", cursor: "pointer", ml: 1 }}>UA</Typography>
+                        <Typography onClick={() => { changeLanguage("en") }} sx={{ color: "black", cursor: "pointer", m: 1 }}>ENG</Typography>
+                        <Typography onClick={() => { changeLanguage("fr") }} sx={{ color: "black", cursor: "pointer" }}>FR</Typography>
+                    </Grid>
+                    <Grid item xs={7} sx={{ textAlign: "end" }}>
                         {!isAuth ? (
                             <>
                                 <Link to="/signin">
                                     <Button sx={{ color: "black" }}>
-                                        Увійти
+                                        {t("signin")}
                                     </Button>
                                 </Link>
                                 <Link to="/signup">
                                     <Button sx={{ color: "black" }}>
-                                        Зареєструватися
+                                        {t("signup")}
                                     </Button>
                                 </Link>
                             </>
@@ -213,13 +224,13 @@ const Navbar = () => {
                                     <MenuItem onClick={handleCloseUserMenu}>
                                         <Link to="/profile">
                                             <Typography textAlign="center">
-                                                Profile
+                                                {t("profile")}
                                             </Typography>
                                         </Link>
                                     </MenuItem>
                                     <MenuItem onClick={logoutHandler}>
                                         <Typography textAlign="center">
-                                            Logout
+                                            {t("logout")}
                                         </Typography>
                                     </MenuItem>
                                 </Menu>
