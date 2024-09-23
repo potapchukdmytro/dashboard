@@ -17,7 +17,16 @@ import { useTranslation } from "react-i18next";
 
 const UsersPage = () => {
     const { userList, usersLoaded } = useSelector((state) => state.userReducer);
-    const { loadUsers, removeUser } = useAction();
+    const { loadUsers, removeUser, editUser } = useAction();
+
+    const newUser = {
+        id: 3,
+        userName: "NewUserTest",
+        email: "user2@dash.com",
+        role: "user",
+        name: "userName2",
+        surname: "userSurname2"
+    };
 
     const deleteUserHandler = (id) => {
         removeUser(id, userList);
@@ -28,6 +37,7 @@ const UsersPage = () => {
     useEffect(() => {
         if (!usersLoaded) {
             loadUsers();
+            editUser(newUser);
         }
     }, []);
 
@@ -69,7 +79,8 @@ const UsersPage = () => {
                             </TableCell>
                             <TableCell align="center">{item.email}</TableCell>
                             <TableCell align="center">{item.role}</TableCell>
-                            <TableCell align="center">{`${item.name} ${item.surname}`}</TableCell>
+                            <TableCell align="center">{`${item.firstName} ${item.lastName}`}</TableCell>
+                            <TableCell align="center"><img src={`https://localhost:5000/wwwroot/images/users/${item.image}`} width="75px" height="75px"/></TableCell>
                             <TableCell align="center">
                                 <Link to={`createuser?user=${item.id}`}>
                                     <EditIcon />
