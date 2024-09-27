@@ -16,7 +16,6 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { GoogleLogin } from "@react-oauth/google";
-import { useDispatch } from "react-redux";
 import { useAction } from "../../../hooks/useAction";
 
 const SignInPage = () => {
@@ -25,12 +24,13 @@ const SignInPage = () => {
     const { signIn } = useAction();
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     // submit method
-    const handleSubmit = (values) => {
-        window.localStorage.setItem("user", JSON.stringify(values));
-        navigate("/");
+    const handleSubmit = async (values) => {        
+        const res = await signIn(values);
+        if(res.success) {
+            navigate("/");
+        };
     };
 
     // google
@@ -65,6 +65,7 @@ const SignInPage = () => {
         initialValues: {
             email: "",
             password: "",
+            rememberMe: false
         },
         onSubmit: handleSubmit,
         validationSchema: validationSchema,
@@ -130,7 +131,9 @@ const SignInPage = () => {
                         </div>
                     ) : null}
                     <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
+                        control={
+                        <Checkbox value={formik.initialValues.rememberMe} name="rememberMe" onChange={formik.handleChange} color="primary" />
+                    }
                         label="Remember me"
                     />
                     <Button

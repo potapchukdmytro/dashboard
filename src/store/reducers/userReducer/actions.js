@@ -16,7 +16,16 @@ export const loadUsers = () => async (dispatch) => {
     }
 };
 
-export const removeUser = (id, users) => (dispatch) => {
+export const removeUser = (id, users) => async (dispatch) => {
+    const response = await axios({
+        method: "DELETE",
+        url: "https://localhost:5000/user?id=" + id
+    });
+
+    const {data} = response;
+    console.log(data);
+    
+    
     const newData = users.filter(u => u.id != id);
     
     dispatch({

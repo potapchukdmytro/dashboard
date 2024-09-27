@@ -30,7 +30,7 @@ const App = () => {
     const currentTheme = theme === "dark" ? darkTheme : lightTheme;
 
     // sign in
-    const { signIn } = useAction();
+    const { authWithToken } = useAction();
 
 
     // get user location
@@ -79,7 +79,7 @@ const App = () => {
     useEffect(() => {
         const token = localStorage.getItem("auth");
         if (token != null) {
-            signIn(token);
+            authWithToken(token);
         }
 
         // get location by user location
