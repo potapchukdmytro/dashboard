@@ -19,9 +19,15 @@ import { useSelector } from "react-redux";
 import { useAction } from "../../hooks/useAction";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { changeLanguage } from "i18next";
+import { changeLanguage, use } from "i18next";
 
-const pages = [
+const userPages = [
+    { id: "1", title: "mainpage", url: "/" },
+    { id: "2", title: "characters", url: "characters" },
+    { id: "3", title: "page3", url: "counter" },
+];
+
+const adminPages = [
     { id: "1", title: "mainpage", url: "/" },
     { id: "2", title: "users", url: "user" },
     { id: "3", title: "characters", url: "characters" },
@@ -35,8 +41,13 @@ const Navbar = () => {
     const { theme } = useSelector((state) => state.themingReducer);
     const { logout, setTheme } = useAction();
     const navigate = useNavigate();
-
     const { t } = useTranslation();
+
+    let pages = userPages;
+
+    if(isAuth) {
+        pages = user.role === "admin" ? adminPages : userPages;
+    }
 
     // auth
     const logoutHandler = () => {

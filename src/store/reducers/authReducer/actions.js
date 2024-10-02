@@ -1,30 +1,41 @@
-import { DialerSip } from "@mui/icons-material";
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import http from "../../../http_common";
 
 export const signIn = (model) => async (dispatch) => {
-    try {
-        const response = await axios({
-            method: "POST",
-            url: "https://localhost:5000/account/signin",
-            data: JSON.stringify(model),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        if(response.status == 200)
-        {
-            const { data } = response;
-            const token = data.payload;
-            localStorage.setItem("auth", token);
-            const user = jwtDecode(token);
-            dispatch({ type: "SIGN_IN", payload: user });
+    try {        
+        const response = await http.post("account/signin", model);
 
-            return { success: true };
-        }
+        const { data } = response;
+        const token = data.payload;
+        localStorage.setItem("auth", token);
+        const user = jwtDecode(token);
+        console.log(user);
+
+        dispatch({ type: "SIGN_IN", payload: user });
+
+        return { success: true };
     } catch (error) {
-        console.error("sign in error: ", error);
-        return { success: false }
+        console.log("test error sign in", error);
+        return { success: false, message: error.response.data.errors[0] };
+    }
+};
+
+export const signUp = (model) => async (dispatch) => {
+    try {        
+        const response = await http.post("account/signup", model);
+
+        const { data } = response;
+        // const token = data.payload;
+        // localStorage.setItem("auth", token);
+        // const user = jwtDecode(token);
+        // console.log(user);
+
+        // dispatch({ type: "SIGN_IN", payload: user });
+
+        return { success: true };
+    } catch (error) {
+        console.log("test error sign up", error);
+        return { success: false, message: error.response.data.errors[0] };
     }
 };
 
@@ -33,8 +44,7 @@ export const authWithToken = (token) => async (dispatch) => {
         localStorage.setItem("auth", token);
         const user = jwtDecode(token);
         dispatch({ type: "SIGN_IN", payload: user });
-    }
-    catch(error) {
+    } catch (error) {
         console.error("sign in error: ", error);
     }
 };

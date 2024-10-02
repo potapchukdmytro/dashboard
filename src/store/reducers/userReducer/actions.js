@@ -1,37 +1,52 @@
 import axios from "axios";
-import usersData from "../../../data/users.json";
+import http from "../../../http_common";
 
 export const loadUsers = () => async (dispatch) => {
     try {
-        const response = await axios.get("https://localhost:5000/user/getall");
+        const token = localStorage.getItem("auth");
+        if(token === null) {
+            return { success: false, message: "У вас недостатньо прав" };
+        }
+
+        const response = await http.get("user", {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
         const {data} = response;
-        console.log(data);
 
         dispatch({
             type: "LOAD_USERS",
             payload: data.payload
         });
-    } catch (error) {
-        console.log("Error load user data: ", error);
+
+        return { success: true, message: "Успіх" };
+    } catch (error) {       
+        const {data} = error.response;
+        if(data.hasOwnProperty("errors")) {
+            return { success: false, message: error.response.data.errors[0] };
+        }
+        else {
+            return { success: false, message: error.message };
+        }
     }
 };
 
-export const removeUser = (id, users) => async (dispatch) => {
-    const response = await axios({
-        method: "DELETE",
-        url: "https://localhost:5000/user?id=" + id
+export const removeUser = (id) => async (dispatch) => {
+    const token = localStorage.getItem("auth");
+        if(token === null) {
+            return { success: false, message: "У вас недостатньо прав" };
+        }
+
+    const response = await http.delete("user?id=" + id, {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
     });
 
     const {data} = response;
-    console.log(data);
     
-    
-    const newData = users.filter(u => u.id != id);
-    
-    dispatch({
-        type: "REMOVE_USER",
-        payload: newData === undefined ? [] : newData
-    });
+    await loadUsers();
 };  
 
 export const editUser = (newUser) => (dispatch) => {

@@ -14,31 +14,36 @@ import { useAction } from "../../hooks/useAction";
 import { useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 const UsersPage = () => {
-    const { userList, usersLoaded } = useSelector((state) => state.userReducer);
-    const { loadUsers, removeUser, editUser } = useAction();
+    const { userList } = useSelector((state) => state.userReducer);
+    const { user } = useSelector(state => state.authReducer);
+    const { loadUsers, removeUser } = useAction();
 
-    const newUser = {
-        id: 3,
-        userName: "NewUserTest",
-        email: "user2@dash.com",
-        role: "user",
-        name: "userName2",
-        surname: "userSurname2"
-    };
-
-    const deleteUserHandler = (id) => {
-        removeUser(id, userList);
+    const deleteUserHandler = async (id) => {
+        if(user.id === id) {
+            toast.error("Ви не можете видалити себе")
+            return;
+        }
+        await removeUser(id);
+        loadUsers();
     };
 
     const { t } = useTranslation();
 
+    const loadUsersHandler = async () => {
+        const res = await loadUsers();
+
+            if(res.success) {
+                toast.success(res.message);
+            } else {
+                toast.error(res.message);
+            }
+    }
+
     useEffect(() => {
-        if (!usersLoaded) {
-            loadUsers();
-            editUser(newUser);
-        }
+        loadUsersHandler();
     }, []);
 
     return (

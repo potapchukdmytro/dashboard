@@ -22,7 +22,6 @@ import "./locales/config";
 import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
-
     // theme
     const clientId =
         "47235399203-5dbvs4krmn7oao0p2fk1102dpam9vgsb.apps.googleusercontent.com";
@@ -30,8 +29,8 @@ const App = () => {
     const currentTheme = theme === "dark" ? darkTheme : lightTheme;
 
     // sign in
+    const { isAuth, user } = useSelector((store) => store.authReducer);
     const { authWithToken } = useAction();
-
 
     // get user location
     const successLocation = async (position) => {
@@ -54,12 +53,12 @@ const App = () => {
         const byIpUrl = `http://ip-api.com/json/${ip}`;
         axios(byIpUrl)
             .then((response) => {
-                localStorage.setItem("userCity", response.data.city)
+                localStorage.setItem("userCity", response.data.city);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }
+    };
 
     const getUserIp = async () => {
         try {
@@ -73,9 +72,7 @@ const App = () => {
         }
     };
 
-
     // localization
-
     useEffect(() => {
         const token = localStorage.getItem("auth");
         if (token != null) {
@@ -83,7 +80,10 @@ const App = () => {
         }
 
         // get location by user location
-        navigator.geolocation.getCurrentPosition(successLocation, errorLocation);
+        navigator.geolocation.getCurrentPosition(
+            successLocation,
+            errorLocation
+        );
 
         // get location by user ip
         // axios
@@ -107,15 +107,23 @@ const App = () => {
                         <Route path="characters" element={<CharactersPage />} />
                         <Route path="profile" element={<ProfilePage />} />
                         <Route path="counter" element={<CounterPage />} />
-                        <Route path="user">
-                            <Route index element={<UsersPage />} />
-                            <Route
-                                path="createuser"
-                                element={<CreateUserPage />}
-                            />
-                        </Route>
-                        <Route path="/signin" element={<SignInPage />} />
-                        <Route path="/signup" element={<SignUpPage />} />
+                        {isAuth && user.role === "admin" && (
+                            <Route path="user">
+                                <Route index element={<UsersPage />} />
+                                <Route
+                                    path="createuser"
+                                    element={<CreateUserPage />}
+                                />
+                            </Route>
+                        )}
+                        <Route
+                            path="/signin"
+                            element={isAuth ? <MainPage /> : <SignInPage />}
+                        />
+                        <Route
+                            path="/signup"
+                            element={isAuth ? <MainPage /> : <SignUpPage />}
+                        />
                         <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>
@@ -129,6 +137,18 @@ const App = () => {
                     pauseOnHover={false}
                 />
             </GoogleOAuthProvider>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover={false}
+                theme="light"
+            />
         </ThemeProvider>
     );
 };

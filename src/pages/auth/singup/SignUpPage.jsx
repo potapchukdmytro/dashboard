@@ -12,33 +12,52 @@ import {
     Container,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useAction } from "../../../hooks/useAction";
+import { toast } from "react-toastify";
 
 const SignUpPage = () => {
+    const { signUp } = useAction();
+
     const validationSchema = Yup.object({
         email: Yup.string()
-            .required("Пошта обов'я зкова")
+            .required("Пошта обов'язкова")
             .matches(
                 /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                 "Не вірний формат пошти"
             ),
+        userName: Yup.string()
+            .required("Ім'я користувача обов'язкове"),
         password: Yup.string()
             .required("Вкажіть пароль")
             .min(6, "Мінімальна довжина паролю 6 символів"),
+        confirmedPassword: Yup.string()
+            .required("Підтвердіть пароль")
+            .oneOf([Yup.ref('password')], 'Паролі повинні збігатися.'),
         firstName: Yup.string().required("Вкажіть своє ім'я"),
         lastName: Yup.string().required("Вкажіть своє прізвище"),
     });
 
-    const submitHadler = (values) => {
-        console.log(values);
+    const navigate = useNavigate();
+
+    const submitHadler = async (values) => {
+        const result = await signUp(values);
+        if(result.success) {
+            toast.info("На пошту відправлено лист з підтвердженням")
+            navigate("/signin")
+        } else {
+            toast.error(result.message);
+        }
     };
 
     const formik = useFormik({
         initialValues: {
             email: "",
+            userName: "",
             password: "",
+            confirmedPassword: "",
             firstName: "",
             lastName: "",
         },
@@ -132,6 +151,24 @@ const SignUpPage = () => {
                             <TextField
                                 required
                                 fullWidth
+                                id="userName"
+                                label="User name"
+                                name="userName"
+                                autoComplete="userName"
+                                value={formik.values.userName}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            {formik.touched.userName && formik.errors.userName ? (
+                                <div style={{ color: "red" }}>
+                                    {formik.errors.userName}
+                                </div>
+                            ) : null}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                fullWidth
                                 name="password"
                                 label="Password"
                                 type="password"
@@ -145,6 +182,25 @@ const SignUpPage = () => {
                             formik.errors.password ? (
                                 <div style={{ color: "red" }}>
                                     {formik.errors.password}
+                                </div>
+                            ) : null}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                fullWidth
+                                name="confirmedPassword"
+                                label="Confirmed password"
+                                type="password"
+                                id="confirmedPassword"
+                                value={formik.values.confirmedPassword}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            {formik.touched.confirmedPassword &&
+                            formik.errors.confirmedPassword ? (
+                                <div style={{ color: "red" }}>
+                                    {formik.errors.confirmedPassword}
                                 </div>
                             ) : null}
                         </Grid>

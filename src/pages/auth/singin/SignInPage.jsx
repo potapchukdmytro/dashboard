@@ -17,26 +17,31 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { GoogleLogin } from "@react-oauth/google";
 import { useAction } from "../../../hooks/useAction";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const SignInPage = () => {
     // const [textShow, setTextShow] = useState(true);
 
+    const { isAuth } = useSelector(store => store.authReducer); 
     const { signIn } = useAction();
 
     const navigate = useNavigate();
 
     // submit method
-    const handleSubmit = async (values) => {        
+    const handleSubmit = async (values) => {
         const res = await signIn(values);
-        if(res.success) {
+        if (res.success) {
             navigate("/");
+        } else {
+            toast.error(res.message);
         };
     };
 
     // google
     const googleSuccesHandler = (credentials) => {
         const token = credentials.credential;
-        
+
         signIn(token);
 
         localStorage.setItem("auth", token);
@@ -65,7 +70,7 @@ const SignInPage = () => {
         initialValues: {
             email: "",
             password: "",
-            rememberMe: false
+            rememberMe: false,
         },
         onSubmit: handleSubmit,
         validationSchema: validationSchema,
@@ -132,8 +137,13 @@ const SignInPage = () => {
                     ) : null}
                     <FormControlLabel
                         control={
-                        <Checkbox value={formik.initialValues.rememberMe} name="rememberMe" onChange={formik.handleChange} color="primary" />
-                    }
+                            <Checkbox
+                                value={formik.initialValues.rememberMe}
+                                name="rememberMe"
+                                onChange={formik.handleChange}
+                                color="primary"
+                            />
+                        }
                         label="Remember me"
                     />
                     <Button
