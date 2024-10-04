@@ -1,6 +1,7 @@
 const initUserState = {
     userList: [],
-    usersLoaded: false
+    usersLoaded: false,
+    roles: []
 };
 
 export const UserReducer = (state = initUserState, action) => {
@@ -15,6 +16,8 @@ export const UserReducer = (state = initUserState, action) => {
             const newUsers = [...state.userList];
             newUsers[index] = newUser;
             return { ...state, userList: newUsers }
+        case "LOAD_ROLES":
+            return { ...state, roles: action.payload }
         default:
             return state;
     }

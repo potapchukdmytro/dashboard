@@ -7,6 +7,7 @@ import {
     TableHead,
     TableRow,
     Paper,
+    Button,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
@@ -98,6 +99,7 @@ const UsersPage = () => {
                     ))}
                 </TableBody>
             </Table>
+            <Link to="/user/createuser"><Button variant="contained">Створити</Button></Link>
         </TableContainer>
     );
 };
