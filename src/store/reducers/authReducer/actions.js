@@ -67,7 +67,7 @@ export const refreshTokens = async () => {
             refreshToken: localStorage.getItem("urt")
         };
 
-        const response = await http.post("account/refreshauth", tokensModel);
+        const response = await http.post("account/RefreshTokens", tokensModel);
         const { data } = response;
 
         localStorage.setItem("auth", data.payload.accessToken);
