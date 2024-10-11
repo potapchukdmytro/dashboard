@@ -6,10 +6,13 @@ export const signIn = (model) => async (dispatch) => {
         const response = await http.post("account/signin", model);
 
         const { data } = response;
-        const token = data.payload;
-        localStorage.setItem("auth", token);
-        const user = jwtDecode(token);
-        console.log(user);
+        const accessToken = data.payload.accessToken;
+        const refreshToken = data.payload.refreshToken;
+
+        localStorage.setItem("auth", accessToken);
+        localStorage.setItem("urt", refreshToken);
+
+        const user = jwtDecode(accessToken);
 
         dispatch({ type: "SIGN_IN", payload: user });
 
@@ -23,14 +26,16 @@ export const signIn = (model) => async (dispatch) => {
 export const signUp = (model) => async (dispatch) => {
     try {        
         const response = await http.post("account/signup", model);
-
         const { data } = response;
-        // const token = data.payload;
-        // localStorage.setItem("auth", token);
-        // const user = jwtDecode(token);
-        // console.log(user);
+        console.log(data);
+        
+        const accessToken = data.payload.accessToken;
+        const refreshToken = data.payload.refreshToken;
+        localStorage.setItem("auth", accessToken);
+        localStorage.setItem("urt", refreshToken);
+        const user = jwtDecode(accessToken);
 
-        // dispatch({ type: "SIGN_IN", payload: user });
+        dispatch({ type: "SIGN_IN", payload: user });
 
         return { success: true };
     } catch (error) {
@@ -51,5 +56,26 @@ export const authWithToken = (token) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
     localStorage.removeItem("auth");
+    localStorage.removeItem("urt");
     dispatch({ type: "LOGOUT" });
 };
+
+export const refreshTokens = async () => {
+    try {
+        const tokensModel = {
+            accessToken: localStorage.getItem("auth"),
+            refreshToken: localStorage.getItem("urt")
+        };
+
+        const response = await http.post("account/refreshauth", tokensModel);
+        const { data } = response;
+
+        localStorage.setItem("auth", data.payload.accessToken);
+        localStorage.setItem("urt", data.payload.refreshToken);
+        
+    } catch (error) {
+        console.error(error);
+    }
+    
+
+}

@@ -1,11 +1,12 @@
 import http from "../../../http_common";
+import { refreshTokens } from "../authReducer/actions";
 
 export const loadUsers = () => async (dispatch) => {
     try {
         const token = localStorage.getItem("auth");
         if(token === null) {
             return { success: false, message: "У вас недостатньо прав" };
-        }
+        }        
 
         const response = await http.get("user", {
             headers: {
@@ -13,14 +14,19 @@ export const loadUsers = () => async (dispatch) => {
             }
         });
         const {data} = response;
-
         dispatch({
             type: "LOAD_USERS",
             payload: data.payload
         });
 
         return { success: true, message: "Успіх" };
-    } catch (error) {       
+    } catch (error) {             
+        if(error.response.status === 401) {
+            console.log(error);
+            
+            await refreshTokens();
+        }
+
         const {data} = error.response;
         if(data.hasOwnProperty("errors")) {
             return { success: false, message: error.response.data.errors[0] };
